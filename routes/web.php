@@ -16,3 +16,7 @@
 $router->get('/', function () {
     return 'Back-end Challenge 2021 🏅 - Space Flight News';
 });
+
+$router->group(['prefix' => 'articles'], function () use ($router) {
+    $router->get('/', 'ArticleController@index');
+});
