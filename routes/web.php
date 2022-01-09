@@ -13,6 +13,6 @@
 |
 */
 
-$router->get('/', function () use ($router) {
-    return $router->app->version();
+$router->get('/', function () {
+    return 'Back-end Challenge 2021 🏅 - Space Flight News';
 });
