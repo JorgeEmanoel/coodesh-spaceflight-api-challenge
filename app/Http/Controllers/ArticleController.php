@@ -2,8 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Resources\ArticleResouce;
 use App\Models\Article;
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
 
 class ArticleController extends Controller
 {
@@ -27,8 +29,19 @@ class ArticleController extends Controller
             );
 
         return response([
-            'articles' => $articles->items(),
+            'articles' => ArticleResouce::collection($articles->items()),
             'pages' => ceil($articles->total() / $per_page),
         ]);
+    }
+
+    public function show($id)
+    {
+        $article = Article::find($id);
+
+        if (!$article) {
+            return response([], Response::HTTP_NOT_FOUND);
+        }
+
+        return response(new ArticleResouce($article));
     }
 }
