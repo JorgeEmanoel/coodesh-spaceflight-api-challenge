@@ -1,6 +1,6 @@
 <?php
 
-namespace tests\ArticleController;
+namespace Tests\ArticleController;
 
 use App\Models\Article;
 use Illuminate\Http\Response;
