@@ -6,6 +6,8 @@
     "type": "project",
     "require": {
         "php": "^7.3|^8.0",
+        "flipbox/lumen-generator": "^8.2",
+        "jenssegers/mongodb": "^3.8",
         "laravel/lumen-framework": "^8.3.1"
     },
     "require-dev": {
