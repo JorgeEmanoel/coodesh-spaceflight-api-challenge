@@ -8,7 +8,7 @@ use Tests\TestCase;
 
 class ShowTest extends TestCase
 {
-    public function testIf404IsBeingReturedWhenNotAricleIsFound()
+    public function testIf404IsBeingReturedWhenNotArticleIsFound()
     {
         $this->json('GET', '/articles/0')
             ->shouldReturnJson()
