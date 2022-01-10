@@ -14,7 +14,8 @@ de artigos.
 
 ## Instruções
 
-Antes de prosseguir, tenha certeza de ter o [docker](https://docs.docker.com/) devidamente instalado e configurado em sua máquina, juntamente com o [compose](https://docs.docker.com/compose).
+Antes de prosseguir, tenha certeza de ter o [docker](https://docs.docker.com/) devidamente instalado
+e configurado em sua máquina, juntamente com o [compose](https://docs.docker.com/compose).
 
 ### Instalação
 
@@ -37,7 +38,8 @@ APP_PORT=9000
 DOCS_PORT=9001
 ```
 
-As variáveis acima serão utlizadas pelo docker para definir as portas da API e da Documentação do swagger, respectivamente.
+As variáveis acima serão utlizadas pelo docker para definir as portas da API e da Documentação do swagger,
+respectivamente.
 
 4. Suba o projeto utilizando `docker-compose`
 
@@ -55,7 +57,8 @@ Para prosseguir com os testes, devemos realizar a configuração completa do ban
 
 ### Configuração do Banco
 
-Configure corretamente as variáveis de ambiente para conexão com o banco de dados utilizando as credenciais definidas no arquivo `docker-compose.yml`. Seu `.env` deve ficar parecido com isso:
+Configure corretamente as variáveis de ambiente para conexão com o banco de dados utilizando as credenciais definidas no
+arquivo `docker-compose.yml`. Seu `.env` deve ficar parecido com isso:
 
 ```env
 DB_CONNECTION=mongodb
@@ -70,7 +73,14 @@ Note que o `DB_HOST` deve ser igual ao valor definido no `hostname` do container
 
 ### Testes
 
-Após tudo configurado, execute os testes dentro do container da API.
+1. Faça uma cópia do seu `.env` para o arquivo `.env.testing`. Esse arquivo será considerado durante os testes.
+É aconselhável que seja utilizado um banco de dados diferente para testes.
+
+```bash
+cp .env .env.testing
+```
+
+2. Após tudo configurado, execute os testes dentro do container da API.
 
 ```
 docker exec spaceflight_api vendor/bin/phpunit
@@ -92,7 +102,8 @@ OK (32 tests, 69 assertions)
 ### Alimentando o banco
 
 Para alimentar o banco, execute o comando `php artisan articles:seed --chunk-size=200`. O comando irá
-consumir a API oficial e registrar os artigos obtidos no banco de dados local. A flag `--chunk-size` define a quantidade de artigos obtidos por iteração, para evitar o sobrecarregamento do servidor.
+consumir a API oficial e registrar os artigos obtidos no banco de dados local. A flag `--chunk-size` define
+a quantidade de artigos obtidos por iteração, para evitar o sobrecarregamento do servidor.
 
 ### Configuração da CRON
 
