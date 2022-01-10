@@ -22,4 +22,5 @@ $router->group(['prefix' => 'articles'], function () use ($router) {
     $router->post('/', 'ArticleController@store');
     $router->get('/{id}', 'ArticleController@show');
     $router->put('/{id}', 'ArticleController@update');
+    $router->delete('/{id}', 'ArticleController@delete');
 });

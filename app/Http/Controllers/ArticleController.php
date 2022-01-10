@@ -152,4 +152,17 @@ class ArticleController extends Controller
 
         return response(new ArticleResource($article));
     }
+
+    public function delete($id)
+    {
+        $article = Article::find($id);
+
+        if (!$article) {
+            return response([], Response::HTTP_NOT_FOUND);
+        }
+
+        $article->delete();
+
+        return response(new ArticleResource($article));
+    }
 }
