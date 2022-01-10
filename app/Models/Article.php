@@ -23,10 +23,20 @@ class Article extends Model
         'featured',
         'launches',
         'events',
+        'origin',
+        'externalId'
     ];
 
     const CREATED_AT = 'publishedAt';
     const UPDATED_AT = 'updatedAt';
+    const DELETED_AT = 'deletedAt';
+
+    const ORIGIN_EXTERNAL = 'external';
+
+    public function scopeExternal($query)
+    {
+        return $query->where('origin', self::ORIGIN_EXTERNAL);
+    }
 
     public function setFeaturedAttribute($value)
     {

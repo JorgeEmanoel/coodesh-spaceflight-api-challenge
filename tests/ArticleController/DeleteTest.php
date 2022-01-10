@@ -27,7 +27,7 @@ class DeleteTest extends TestCase
 
         $this->notSeeInDatabase('articles', [
             $this->article->getKeyName() => $this->article->id,
-            'deleted_at' => null,
+            $this->article::DELETED_AT => null,
         ]);
     }
 
