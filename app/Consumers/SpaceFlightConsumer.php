@@ -16,7 +16,7 @@ final class SpaceFlightConsumer extends Consumer
     public function get()
     {
         if (!$this->resource) {
-            throw new \Exception('No resource specified. Use the resource() method before calling get');
+            throw new \Exception('No resource specified. Use the resource() method before calling get()');
         }
 
         return $this->request(
@@ -36,7 +36,7 @@ final class SpaceFlightConsumer extends Consumer
     public function count()
     {
         if (!$this->resource) {
-            throw new \Exception('No resource specified. Use the resource() method before calling get');
+            throw new \Exception('No resource specified. Use the resource() method before calling count()');
         }
 
         return $this->request(
