@@ -45,8 +45,15 @@ abstract class Consumer
 
     /**
      * @return array
+     * @throws \Exception
      */
     abstract public function get();
+
+    /**
+     * @return array
+     * @throws \Exception
+     */
+    abstract public function count();
 
     public function skip(int $skip)
     {
