@@ -1,0 +1,256 @@
+openapi: '3.0.0'
+info:
+  title: 'Space Flight API'
+  description: 'This is a challenge by Coodesh. Solved by Jorge Emanoel <eu.jorge.emanoell@gmail.com>.'
+  version: '1.0.0'
+  contact:
+    email: 'eu.jorge.emanoell@gmail.com'
+  license:
+    name: 'Apache 2.0'
+    url: 'http://www.apache.org/licenses/LICENSE-2.0.html'
+servers:
+  - url: 'https://coodesh.spaceflight.jorgeemanoel.com'
+    description: 'Main server'
+tags:
+- name: 'articles'
+  description: ''
+  externalDocs:
+    description: 'Find out more'
+    url: 'https://api.spaceflightnewsapi.net/v3/documentation#/Article/get_articles_count'
+paths:
+  /articles:
+    get:
+      tags:
+        - articles
+      parameters:
+        - name: page
+          in: query
+          description: 'The preferred pagination page'
+          schema:
+            type: number
+        - name: per_page
+          in: query
+          description: 'Amount of items per page'
+          schema:
+            type: number
+      responses:
+        200:
+          description: 'List of articles'
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  pages:
+                    type: number
+                    description: 'Total pages (given the per_page option)'
+                  articles:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Article'
+    post:
+      tags:
+        - articles
+      description: 'Create an Article'
+      parameters:
+        - name: featured
+          in: query
+          required: true
+          schema:
+            type: boolean
+        - name: title
+          in: query
+          required: true
+          schema:
+            type: string
+        - name: url
+          in: query
+          required: true
+          schema:
+            type: string
+        - name: imageUrl
+          in: query
+          required: true
+          schema:
+            type: string
+        - name: newsSite
+          in: query
+          required: true
+          schema:
+            type: string
+        - name: summary
+          in: query
+          required: true
+          schema:
+            type: string
+        - name: publishedAt
+          in: query
+          required: true
+          schema:
+            type: string
+        - name: launches
+          in: query
+          schema:
+            type: array
+            items:
+              $ref: '#/components/schemas/Launch'
+        - name: events
+          in: query
+          schema:
+            type: array
+            items:
+              $ref: '#/components/schemas/Event'
+      responses:
+        422:
+          description: 'Invalid fields'
+        201:
+          description: 'Article successful created'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Article'
+
+  /articles/{id}:
+    get:
+      tags:
+        - articles
+      description: 'Retrieve an article'
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        404:
+          description: 'Article not found'
+        200:
+          description: 'Article found'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Article'
+    put:
+      tags:
+        - articles
+      description: 'Update an Article'
+      parameters:
+        - name: id
+          required: true
+          in: path
+          schema:
+            type: string
+        - name: featured
+          in: query
+          schema:
+            type: boolean
+        - name: title
+          in: query
+          schema:
+            type: string
+        - name: url
+          in: query
+          schema:
+            type: string
+        - name: imageUrl
+          in: query
+          schema:
+            type: string
+        - name: newsSite
+          in: query
+          schema:
+            type: string
+        - name: summary
+          in: query
+          schema:
+            type: string
+        - name: publishedAt
+          in: query
+          schema:
+            type: string
+        - name: launches
+          in: query
+          schema:
+            type: array
+            items:
+              $ref: '#/components/schemas/Launch'
+        - name: events
+          in: query
+          schema:
+            type: array
+            items:
+              $ref: '#/components/schemas/Event'
+      responses:
+        404:
+          description: 'Article not found'
+        422:
+          description: 'Invalid fields'
+        201:
+          description: 'Article successful created'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Article'
+    delete:
+      tags:
+        - articles
+      description: 'Delete an article'
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        404:
+          description: 'Article not found'
+        200:
+          description: 'Article deleted'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Article'
+
+components:
+  schemas:
+    Article:
+      type: object
+      properties:
+        id:
+          type: number
+        featured:
+          type: boolean
+        title:
+          type: string
+        url:
+          type: string
+        imageUrl:
+          type: string
+        newsSite:
+          type: string
+        summary:
+          type: string
+        publishedAt:
+          type: string
+        launches:
+          type: array
+          items:
+            $ref: '#/components/schemas/Launch'
+        events:
+          type: array
+          items:
+            $ref: '#/components/schemas/Event'
+    Launch:
+      type: object
+      properties:
+        id:
+          type: string
+        provider:
+          type: string
+    Event:
+      type: object
+      properties:
+        id:
+          type: string
+        provider:
+          type: string
