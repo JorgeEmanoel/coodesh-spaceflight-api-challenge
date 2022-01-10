@@ -17,16 +17,15 @@ class UpdateTest extends TestCase
         $this->article = Article::factory()->create();
     }
 
-    public function testIf404IsBeingReturedWhenNotArticleIsFound()
+    public function testIf404IsBeingReturedWhenArticleIsNotFound()
     {
         $this->json('PUT', "/articles/0", [])
             ->assertResponseStatus(Response::HTTP_NOT_FOUND);
     }
 
-
     /**
      * @dataProvider typesBeingValidatedDataProvider
-     * @depends testIf404IsBeingReturedWhenNotArticleIsFound
+     * @depends testIf404IsBeingReturedWhenArticleIsNotFound
      */
     public function testIfTypesBeingValidated(array $data)
     {
