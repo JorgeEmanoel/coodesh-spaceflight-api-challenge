@@ -42,7 +42,7 @@ class UpdateTest extends TestCase
             ->assertResponseOk();
 
         $this->seeInDatabase('articles', [
-            'id' => $this->article->id,
+            $this->article->getKeyName() => $this->article->id,
             'title' => 'Lorem ipsum dolor sit amet',
         ]);
     }
