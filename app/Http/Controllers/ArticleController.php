@@ -97,4 +97,59 @@ class ArticleController extends Controller
             Response::HTTP_CREATED
         );
     }
+
+    public function update(Request $request, $id)
+    {
+        $article = Article::find($id);
+
+        if (!$article) {
+            return response([], Response::HTTP_NOT_FOUND);
+        }
+
+        $this->validate($request, [
+            'title' => 'string',
+            'url' => 'url',
+            'imageUrl' => 'url',
+            'newsSite' => 'string',
+            'summary' => 'string',
+            'events' => 'array',
+            'launches' => 'array',
+        ]);
+
+        if ($request->events) {
+            foreach ($request->events as $event) {
+                $validator = Validator::make((array) $event, [
+                    'id' => 'required|string',
+                    'provider' => 'required|string',
+                ]);
+
+                if ($validator->fails()) {
+                    return response(
+                        null,
+                        Response::HTTP_UNPROCESSABLE_ENTITY
+                    );
+                }
+            }
+        }
+
+        if ($request->launches) {
+            foreach ($request->launches as $launch) {
+                $validator = Validator::make((array) $launch, [
+                    'id' => 'required|string',
+                    'provider' => 'required|string',
+                ]);
+
+                if ($validator->fails()) {
+                    return response(
+                        null,
+                        Response::HTTP_UNPROCESSABLE_ENTITY
+                    );
+                }
+            }
+        }
+
+        $article->update($request->all());
+
+        return response(new ArticleResource($article));
+    }
 }
