@@ -5,6 +5,7 @@ namespace App\Console\Commands;
 use App\Consumers\SpaceFlightConsumer;
 use App\Models\Article;
 use Illuminate\Console\Command;
+use Illuminate\Support\Facades\Log;
 
 class ArticlesSeedCommand extends Command
 {
@@ -115,6 +116,7 @@ class ArticlesSeedCommand extends Command
                 ->get();
 
             if (!$response['success']) {
+                Log::error('It was not possible retrive the API articles.');
                 return false;
             }
 
@@ -145,7 +147,11 @@ class ArticlesSeedCommand extends Command
             $article['externalId'] = $article['id'];
         }
 
-        Article::insert($articles);
+        try {
+            Article::insert($articles);
+        } catch (\Exception $e) {
+            Log::error('It was not possible to persist the new articles. Error: ' . $e->getMessage());
+        }
     }
 
     public function fetchRecordedArticles()
