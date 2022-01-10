@@ -1,0 +1,36 @@
+version: '3.9'
+services:
+  api:
+    build: .
+    container_name: spaceflight_api
+    hostname: spaceflight_api
+    environment:
+      DB_HOST: spaceflight_db
+    ports:
+      - ${APP_PORT}:80
+    volumes:
+      - ./:/var/www
+    networks:
+      - spaceflight
+  docs:
+    image: swaggerapi/swagger-ui
+    container_name: spaceflight_docs
+    volumes:
+      - ./:/app
+    environment:
+      - SWAGGER_JSON=/app/swagger.json
+    ports:
+      - ${DOCS_PORT}:8080
+  mongodb:
+    image: mongo:5.0.5
+    container_name: spaceflight_db
+    hostname: spaceflight_db
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: spaceflight
+      MONGO_INITDB_ROOT_PASSWORD: spaceflight
+    networks:
+      - spaceflight
+networks:
+  spaceflight:
+    name: spaceflight
+    driver: bridge
