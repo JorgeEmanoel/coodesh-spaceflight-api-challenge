@@ -124,6 +124,10 @@ crontab -e
 
 Acesse a documentação através do endereço local: http://localhost:9001 (onde 9001 é a porta definida por você para o container da documentação).
 
+### Video explicativo
+
+https://www.loom.com/embed/7972bf73934c48aebcc9efc85350780e
+
 ## Licença
 
 Este projeto está sob os termos da licença [Apache 2.0](https://www.apache.org/licenses/LICENSE-2.0).
