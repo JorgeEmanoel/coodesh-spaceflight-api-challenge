@@ -2,8 +2,20 @@
 
 require_once __DIR__.'/../vendor/autoload.php';
 
+/**
+ * Custom env loading. Thanks @patricus
+ * https://stackoverflow.com/questions/65713265/lumen-8-not-using-env-testing
+ */
+$env = env('APP_ENV');
+$file = '.env.'.$env;
+
+if (!file_exists(dirname(__DIR__).'/'.$file)) {
+    $file = null;
+}
+
 (new Laravel\Lumen\Bootstrap\LoadEnvironmentVariables(
-    dirname(__DIR__)
+    dirname(__DIR__),
+    $file
 ))->bootstrap();
 
 date_default_timezone_set(env('APP_TIMEZONE', 'UTC'));
@@ -23,9 +35,7 @@ $app = new Laravel\Lumen\Application(
     dirname(__DIR__)
 );
 
-// $app->withFacades();
-
-// $app->withEloquent();
+$app->withFacades();
 
 /*
 |--------------------------------------------------------------------------
@@ -94,6 +104,10 @@ $app->configure('app');
 // $app->register(App\Providers\AppServiceProvider::class);
 // $app->register(App\Providers\AuthServiceProvider::class);
 // $app->register(App\Providers\EventServiceProvider::class);
+$app->register(Flipbox\LumenGenerator\LumenGeneratorServiceProvider::class);
+$app->register(Jenssegers\Mongodb\MongodbServiceProvider::class);
+
+$app->withEloquent();
 
 /*
 |--------------------------------------------------------------------------

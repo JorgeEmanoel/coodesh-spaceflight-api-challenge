@@ -13,6 +13,14 @@
 |
 */
 
-$router->get('/', function () use ($router) {
-    return $router->app->version();
+$router->get('/', function () {
+    return 'Back-end Challenge 2021 🏅 - Space Flight News';
+});
+
+$router->group(['prefix' => 'articles'], function () use ($router) {
+    $router->get('/', 'ArticleController@index');
+    $router->post('/', 'ArticleController@store');
+    $router->get('/{id}', 'ArticleController@show');
+    $router->put('/{id}', 'ArticleController@update');
+    $router->delete('/{id}', 'ArticleController@delete');
 });
