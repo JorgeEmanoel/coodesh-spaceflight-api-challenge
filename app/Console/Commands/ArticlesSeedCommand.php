@@ -40,6 +40,11 @@ class ArticlesSeedCommand extends Command
     protected $total = 0;
 
     /**
+     * @var int
+     */
+    protected $skip = 0;
+
+    /**
      * Articles from oficial API that were recorded (initial value)
      *
      * @var int
@@ -98,12 +103,6 @@ class ArticlesSeedCommand extends Command
         $this->line('Fetching oficial articles count..');
         $this->fetchOficialArticlesCount();
 
-        if ($this->oficial_total <= $this->total) {
-            $this->warn('Oficial API doesnt have any new resource.');
-            $this->line('No action required.');
-            return false;
-        }
-
         $this->info('The sync process will begin now.');
         $this->line('You can exit anytime you want, but the process will not be finished.');
 
@@ -111,7 +110,7 @@ class ArticlesSeedCommand extends Command
 
         do {
             $response = $this->consumer->resource('articles')
-                ->skip($this->total)
+                ->skip($this->skip)
                 ->take($this->chunk_size)
                 ->get();
 
@@ -130,7 +129,9 @@ class ArticlesSeedCommand extends Command
             $this->line("Registering $entries articles..");
 
             $this->saveArticles($articles);
-            $this->increaseTotal($entries);
+            $this->increaseSkip($entries);
+
+            return false;
         } while ($entries);
 
         $elapsed_time = microtime(true) - $started_at;
@@ -142,15 +143,17 @@ class ArticlesSeedCommand extends Command
 
     public function saveArticles(array $articles)
     {
-        foreach ($articles as &$article) {
+        foreach ($articles as $article) {
             $article['origin'] = Article::ORIGIN_EXTERNAL;
             $article['externalId'] = $article['id'];
-        }
 
-        try {
-            Article::insert($articles);
-        } catch (\Exception $e) {
-            Log::error('It was not possible to persist the new articles. Error: ' . $e->getMessage());
+            try {
+                Article::updateOrCreate([
+                    'externalId' => (int) $article['externalId'],
+                ], $article);
+            } catch (\Exception $e) {
+                Log::error('It was not possible to persist an article. Error: ' . $e->getMessage());
+            }
         }
     }
 
@@ -171,8 +174,8 @@ class ArticlesSeedCommand extends Command
         $this->oficial_total = $response['data'];
     }
 
-    public function increaseTotal(int $quantity)
+    public function increaseSkip(int $quantity)
     {
-        $this->total += $quantity;
+        $this->skip += $quantity;
     }
 }
